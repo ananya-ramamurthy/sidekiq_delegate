@@ -39,8 +39,6 @@ module SidekiqDelegate
       #
       def perform(options)
         call_delegate(options)
-      rescue SidekiqDelegate::Error::DelegateError => e
-        logger.error "NON-RETRYABLE: #{e.inspect} ( NOTE: This job is misconfigured. Use perform_bulk or perform_async to ensure job is valid during enqueue )"
       end
 
       private
@@ -49,6 +47,8 @@ module SidekiqDelegate
         delegate = delegate_method(options)
         logger.info "#{delegate.inspect} begin"
         delegate.call
+      rescue SidekiqDelegate::Error::DelegateError => e
+        logger.error "NON-RETRYABLE: #{e.inspect} ( NOTE: This job is misconfigured. Use perform_bulk or perform_async to ensure job is valid during enqueue )"
       ensure
         logger.info "#{delegate.inspect} end"
       end

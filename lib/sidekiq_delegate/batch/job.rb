@@ -18,6 +18,7 @@ module SidekiqDelegate
 
         def perform(options)
           unless valid_within_batch?
+            logger.warn "batch invalidated (dying quietly)"
             return
           end
 

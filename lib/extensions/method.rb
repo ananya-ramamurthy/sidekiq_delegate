@@ -60,12 +60,14 @@ class Method
     module_function :from_hash_splat
 
     def call
-      if !args.empty? && !named_args.empty?
-        super(*args, **named_args)
+      if args.empty? && named_args.empty?
+        super
       elsif args.empty?
         super(**named_args)
-      else
+      elsif named_args.empty?
         super(*args)
+      else
+        super(*args, **named_args)
       end
     end
 
