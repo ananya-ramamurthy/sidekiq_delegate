@@ -6,20 +6,11 @@ module SidekiqDelegate
         raise SidekiqDelegate::Error::DelegateError, "#{name}##{__method__} delegate must be a Method::WithArgs"
       end
 
-      validate_delegate_receiver!(method_with_args)
-    end
-    module_function :validate_delegate!
-
-    def validate_delegate_receiver!(method)
-      unless method.is_a?(Method)
-        raise SidekiqDelegate::Error::DelegateError, "#{name}##{__method__} delegate must be a method"
-      end
-
-      return if method.receiver.is_a?(Class)
+      return if method_with_args.receiver.is_a?(Class)
 
       raise SidekiqDelegate::Error::DelegateError, "#{name}##{__method__} delegate must be a class method"
     end
-    module_function :validate_delegate_receiver!
+    module_function :validate_delegate!
 
   end
 end
