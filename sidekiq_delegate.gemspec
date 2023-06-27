@@ -30,7 +30,12 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'sidekiq', '~> 5.2'
-  spec.add_dependency 'sidekiq-pro', '~> 5.0.0'
+  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rake", "~> 12.0"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "faker"
+
+  spec.add_dependency 'sidekiq', '>= 5.2', '< 7.0.0'
+  spec.add_dependency 'sidekiq-pro', '~> 5.0'
 
 end

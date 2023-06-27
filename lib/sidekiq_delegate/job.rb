@@ -109,16 +109,21 @@ module SidekiqDelegate
       #   YourJob.perform_bulk(method_with_args_list, queue: :not_default_queue)
       #
       def perform_bulk(source_list, queue: sidekiq_options['queue'])
-        args = source_list.map do |source_object|
+        args = source_list.each_with_object([]) do |source_object, args|
           method_with_args = if block_given?
             yield source_object
           else
             source_object
           end
 
-          validate_delegate!(method_with_args)
+          next if method_with_args.nil?
 
-          [method_with_args.to_h]
+          method_set = [method_with_args].flatten.compact
+
+          method_set.map do |method_with_args|
+            validate_delegate!(method_with_args)
+            args << [method_with_args.to_h]
+          end
         end
 
         Sidekiq::Client.push_bulk(

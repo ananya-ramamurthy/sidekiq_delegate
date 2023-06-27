@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "sidekiq_delegate"
+require 'faker'
+require 'byebug'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

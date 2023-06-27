@@ -17,8 +17,6 @@ class Method
   end
 
   module WithArgs
-    attr_accessor :args, :named_args
-
     # from_hash_splat will regenerate the original Method::WithArgs when
     # the splatted hash was created by calling to_h on a previous Method::WithArgs
     #
@@ -100,6 +98,14 @@ class Method
         method_with_args.named_args == named_args
     end
 
+    def args
+      @args
+    end
+
+    def named_args
+      @named_args
+    end
+
     protected
 
     def validate_args!
@@ -108,7 +114,7 @@ class Method
           Method::WithArgs arguments don't match the method signature of the source method:\n\n
           #{source}\n\n
           (NOTE: unbracketed hash arguments aren't supported)
-        ).squish
+        ).split.join(' ')
       end
     end
 
@@ -130,13 +136,19 @@ class Method
         pair.first == :keyreq
       end
 
+      unlimited = named_params.any? do |pair|
+        pair.first == :keyrest
+      end
+
       missing_required = required.any? do |pair|
         !named_args.keys.include?(pair.last)
       end
 
-      has_invalid_options = named_args.except(*named_params.map(&:last)).present?
+      invalid_options = named_args.reject do |k, _v|
+        named_params.map(&:last).include?(k)
+      end
 
-      missing_required || has_invalid_options
+      missing_required || !unlimited && !invalid_options.empty?
     end
 
     def invalid_args?
@@ -145,10 +157,24 @@ class Method
         pair.first == :req
       end
 
-      too_many = args.size > unnamed_params.size
+      unlimited = unnamed_params.any? do |pair|
+        pair.first == :rest
+      end
+
+      too_many = !unlimited && args.size > unnamed_params.size
       too_few = args.size < required.size
 
       too_many || too_few
+    end
+
+    private
+
+    def args=(args)
+      @args = args
+    end
+
+    def named_args=(named_args)
+      @named_args = named_args
     end
 
   end
