@@ -1,3 +1,7 @@
+## [6.0.0]
+
+- Beginning of the rails version specific support for rails 6.x
+
 ## [0.2.0]
 
 ### Added 
