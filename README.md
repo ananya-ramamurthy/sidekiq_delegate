@@ -1,3 +1,15 @@
+## IMPORTANT - Versioning updates to support Rails versions...
+With the various versions of Rails that this gem needs to support, we are taking on a new versioning scheme.
+This is supported by automated builds from the branches supporting the rails versions.
+
+### Branches and Versions
+
+| Branch   | Version | Description                |
+|----------|---------|----------------------------|
+| rails4-x | 4       | Supports rails 4           |
+| rails5-x | 5       | Supports rails 5 as needed |
+| rails6-x | 6       | Supports rails 6 and above |
+
 # SidekiqDelegate
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sidekiq_delegate`. To experiment with that code, run `bin/console` for an interactive prompt.
