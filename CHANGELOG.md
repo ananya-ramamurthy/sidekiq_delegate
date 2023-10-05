@@ -1,3 +1,7 @@
+## [5.0.0]
+
+- Beginning of the rails version specific support.
+
 ## [0.2.0]
 
 ### Added 
